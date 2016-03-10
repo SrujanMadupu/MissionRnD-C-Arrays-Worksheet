@@ -15,7 +15,7 @@ NOTES:
 
 #include <iostream>
 #include <malloc.h>
-void sort(struct student A[], int p, int r);
+void sorting(struct student A[], int p, int r);
 void merg(struct student A[], int p, int q, int r);
 struct student {
 	char *name;
@@ -23,26 +23,26 @@ struct student {
 };
 
 struct student ** topKStudents(struct student *students, int len, int K) {
-	if (students != NULL&&len > 0 && K > 0&&K<=len){
-		struct student *topk;
-		topk = (struct student*)malloc(sizeof(struct student)*K);
-		sort(students, 0, len - 1);
-		for (int i = 0,j=0; i < K; i++){
-			topk[i] = students[j];
-			j++;
+	if (students != NULL&&len > 0 && K >0){
+		struct student **topk = (struct student**) malloc(sizeof(struct student*) * K);
+		sorting(students,0,len-1);
+		for (int i = 0; i < K; i++){
+			struct student *temp = (struct student*)malloc(sizeof(struct student));
+			*temp = students[i];
+			topk[i] = temp;
 		}
-		return &topk;
+		return topk;
 	}   
 	else{
 		return NULL;
 	}
 }
-void sort(struct student A[], int p, int r){
+void sorting(struct student A[], int p, int r){
 	int q;
 	if (p<r){  //Anchor condition
 		q = ((p + r) / 2);  //finding midpoint
-		sort(A, p, q);
-		sort(A, q + 1, r);
+		sorting(A, p, q);
+		sorting(A, q + 1, r);
 		merg(A, p, q, r);
 	}
 }
